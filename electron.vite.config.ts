@@ -4,7 +4,8 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from 'tailwindcss'
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin()],
+    publicDir: resolve(__dirname, 'resources')
   },
   preload: {
     plugins: [externalizeDepsPlugin()]
