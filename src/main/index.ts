@@ -9,11 +9,17 @@ function createWindow(): void {
     height: 670,
     show: false,
     autoHideMenuBar: true,
+    trafficLightPosition: {
+      x: 10,
+      y: 10
+    },
+    titleBarStyle: 'hiddenInset',
     backgroundColor: '#17141f',
     ...(process.platform === 'linux' ? { icon: join(__dirname, '../resources/icon.png') } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
+
     }
   })
 

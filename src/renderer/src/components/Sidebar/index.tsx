@@ -10,11 +10,23 @@ import { useQuery } from '@tanstack/react-query'
 export function Sidebar() {
   const isMacOS = process.platform === 'darwin'
 
-  const { data } = useQuery(['documents'], async () => {
-    const response = await window.api.fetchDocuments()
+  // const { data } = useQuery(['documents'], async () => {
+  //   const response = await window.api.fetchDocuments()
 
-    return response.data
-  })
+  //   return response.data
+  // })
+
+  
+  const data = [
+    {
+      id: '1',
+      title: 'Note 1',
+    },
+    {
+      id: '2',
+      title: 'Note 2',
+    },
+  ]
 
   return (
     <Collapsible.Content className="bg-rotion-800 flex-shrink-0 border-r border-rotion-600 h-screen relative group data-[state=open]:animate-slideIn data-[state=closed]:animate-slideOut overflow-hidden">
