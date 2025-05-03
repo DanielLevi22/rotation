@@ -1,5 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI, type ElectronAPI } from '@electron-toolkit/preload'
+import  { IPC } from '../shared/constants/ipc'
+import type { FetchAllDocumentsResponse, FetchDocumentRequest, FetchDocumentResponse, CreateDocumentResponse, SaveDocumentRequest, DeleteDocumentRequest } from '../shared/types/ipc'
 // Custom APIs for renderer
 
 
@@ -10,10 +12,35 @@ declare global {
   }
 }
 
-export const api = {
-  fetchDocuments(){
-    return ipcRenderer.invoke('fetch-documents')
-  }
+
+const api = {
+  fetchDocuments(): Promise<FetchAllDocumentsResponse> {
+    return ipcRenderer.invoke(IPC.DOCUMENTS.FETCH_ALL)
+  },
+
+  fetchDocument(req: FetchDocumentRequest): Promise<FetchDocumentResponse> {
+    return ipcRenderer.invoke(IPC.DOCUMENTS.FETCH, req)
+  },
+
+  createDocument(): Promise<CreateDocumentResponse> {
+    return ipcRenderer.invoke(IPC.DOCUMENTS.CREATE)
+  },
+
+  saveDocument(req: SaveDocumentRequest): Promise<void> {
+    return ipcRenderer.invoke(IPC.DOCUMENTS.SAVE, req)
+  },
+
+  deleteDocument(req: DeleteDocumentRequest): Promise<void> {
+    return ipcRenderer.invoke(IPC.DOCUMENTS.DELETE, req)
+  },
+
+  onNewDocumentRequest(callback: () => void) {
+    ipcRenderer.on('new-document', callback)
+
+    return () => {
+      ipcRenderer.off('new-document', callback)
+    }
+  },
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

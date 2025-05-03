@@ -2,7 +2,13 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { registerRoute } from '../lib/electron-router-dom'
+import { createTray } from './tray'
+import { createShortcuts } from './shortcuts'
+import icon from '../../resources/icon.png?asset'
+
 import './ipc'
+import './store'
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -16,7 +22,7 @@ function createWindow(): void {
     },
     titleBarStyle: 'hiddenInset',
     backgroundColor: '#17141f',
-    ...(process.platform === 'linux' ? { icon: join(__dirname, '../resources/icon.png') } : {}),
+    icon: join(__dirname, '../../resources/icon.png'), // Caminho para o ícone
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -43,6 +49,8 @@ function createWindow(): void {
     browserWindow: mainWindow,
     htmlFile: join(__dirname, '../renderer/index.html'),
   });
+  createTray(mainWindow)
+  createShortcuts(mainWindow)
 
 
 }

@@ -8,27 +8,24 @@ export function CreatePage() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
-  const { isLoading: isCreatingNewDocument, mutateAsync: createDocument } =
-    useMutation(
-      async () => {
+  const { isPending: isCreatingNewDocument, mutateAsync: createDocument } =
+    useMutation({
+      mutationFn: async () => {
         const response = await window.api.createDocument()
-
         return response.data
       },
-      {
-        onSuccess: (data) => {
-          queryClient.setQueryData<Document[]>(['documents'], (documents) => {
-            if (documents && documents.length >= 0) {
-              return [...documents, data]
-            } else {
-              return [data]
-            }
-          })
+      onSuccess: (data: Document) => {
+        queryClient.setQueryData<Document[]>(['documents'], (documents) => {
+          if (documents && documents.length >= 0) {
+            return [...documents, data]
+          } else {
+            return [data]
+          }
+        })
 
-          navigate(`/documents/${data.id}`)
-        },
+        navigate(`/documents/${data.id}`)
       },
-    )
+    })
 
   useEffect(() => {
     function onNewDocument() {

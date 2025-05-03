@@ -17,21 +17,17 @@ export function Header({ isSidebarOpen }: HeaderProps) {
 
   const isMacOS = process.platform === 'darwin'
 
-  const { mutateAsync: deleteDocument, isLoading: isDeletingDocument } =
-    useMutation(
-      async () => {
-        await window.api.deleteDocument({ id: id! })
-      },
-      {
-        onSuccess: () => {
-          queryClient.setQueryData<Document[]>(['documents'], (documents) => {
-            return documents?.filter((document) => document.id !== id)
-          })
-
-          navigate('/')
-        },
-      },
-    )
+  const { mutateAsync: deleteDocument, isPending: isDeletingDocument } = useMutation({
+    mutationFn: async () => {
+      await window.api.deleteDocument({ id: id! });
+    },
+    onSuccess: () => {
+      queryClient.setQueryData<Document[]>(['documents'], (documents) => {
+        return documents?.filter((document) => document.id !== id);
+      });
+      navigate('/');
+    },
+  });
 
   return (
     <div
