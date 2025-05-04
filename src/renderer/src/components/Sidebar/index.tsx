@@ -56,7 +56,7 @@ export function Sidebar() {
             <Navigation.SectionContent>
                 {Array.isArray(data) && (
                     data.map((document) => (
-                      <div key={document.id}>{document.title}</div>
+                      <Navigation.Link key={document.id} to={`/documents/${document.id}`}>{document.title}</Navigation.Link>
                     ))
                 )}
             </Navigation.SectionContent>
