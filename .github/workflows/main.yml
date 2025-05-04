@@ -22,10 +22,6 @@ jobs:
         with:
           node-version: 22
 
-      - name: apt-update (Linux)
-        if: startsWith(matrix.os, 'ubuntu-latest') || startsWith(matrix.os, 'macos-latest')
-        run: sudo apt-get update
-
       - name: Install dependencies (Generate package-lock.json if missing)
         run: |
           if [ "$(uname)" == "Darwin" ] || [ "$(uname)" == "Linux" ]; then
@@ -38,8 +34,12 @@ jobs:
             }
           fi
 
-      - name: Install libarchive rpm on Linux (Ubuntu)
-        if: startsWith(matrix.os, 'ubuntu-latest')
+      - name: Install dependencies on Ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get update
+
+      - name: Install libarchive rpm on Ubuntu (Linux)
+        if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install libarchive-tools rpm
 
       - name: Install dependencies
