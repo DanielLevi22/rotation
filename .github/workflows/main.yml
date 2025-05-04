@@ -15,10 +15,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Node.js, NPM and Yarn
+      - name: Install Node.js, NPM, and Yarn
         uses: actions/setup-node@v3
         with:
           node-version: 22
+
+      - name: Install dependencies (Generate package-lock.json if missing)
+        run: |
+          if ($env:OS -eq "Windows_NT") {
+            if (-Not (Test-Path "package-lock.json")) {
+              npm install
+            }
+          } else {
+            if [ ! -f package-lock.json ]; then
+              npm install
+            fi
+          }
 
       - name: apt-update
         if: startsWith(matrix.os, 'ubuntu-latest')
@@ -32,26 +44,6 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu-latest')
         run: sudo apt-get install libarchive-tools rpm
 
-      - name: Install macOS dependencies
-        if: startsWith(matrix.os, 'macos-latest')
-        run: |
-          xcode-select --install || true
-          brew update || true
-          brew install libtool automake cmake pkg-config || true
-
-      - name: Clean npm cache and remove node_modules (if on macOS)
-        if: startsWith(matrix.os, 'macos-latest')
-        run: |
-          rm -rf node_modules
-          rm package-lock.json
-          npm cache clean --force
-
-      - name: Install dependencies (Generate package-lock.json if missing)
-        run: |
-          if [ ! -f package-lock.json ]; then
-            npm install
-          fi
-
       - name: Install dependencies
         run: npm ci
 
@@ -59,4 +51,4 @@ jobs:
         uses: samuelmeuli/action-electron-builder@v1
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          release: true
+          release: true 

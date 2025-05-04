@@ -1,6 +1,6 @@
 {
   "name": "rotation",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "type": "module",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
