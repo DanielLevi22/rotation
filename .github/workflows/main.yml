@@ -35,10 +35,12 @@ jobs:
       - name: Install macOS dependencies
         if: startsWith(matrix.os, 'macos-latest')
         run: |
-          # Instalar Xcode Command Line Tools (necessário para builds no macOS)
-          xcode-select --install
-          brew update
-          brew install libtool automake cmake pkg-config
+          # Ignorar erro se os Xcode Command Line Tools já estiverem instalados
+          xcode-select --install || true
+          # Garantir que o brew está atualizado
+          brew update || true
+          # Instalar pacotes necessários no macOS
+          brew install libtool automake cmake pkg-config || true
 
       - name: Clean npm cache and remove node_modules (if on macOS)
         if: startsWith(matrix.os, 'macos-latest')
