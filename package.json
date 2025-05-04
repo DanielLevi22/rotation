@@ -1,6 +1,6 @@
 {
   "name": "rotation",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
@@ -13,7 +13,7 @@
     "build": "electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
-  "build:win": "npm run build && electron-builder --win",
+    "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
     "build:linux": "electron-vite build && electron-builder --linux",
     "release": "npm run build && electron-builder --win --mac --linux"
@@ -30,12 +30,13 @@
     "@tiptap/extension-typography": "^2.11.9",
     "@tiptap/react": "^2.11.9",
     "@tiptap/starter-kit": "^2.11.9",
+    "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "electron-router-dom": "^2.1.0",
     "electron-store": "^8.2.0",
     "phosphor-react": "^1.4.1",
     "react-router-dom": "^7.5.3",
-    "tailwind-scrollbar": "^4.0.2"
+    "tailwind-scrollbar-hide": "^2.0.0"
   },
   "devDependencies": {
     "@electron-toolkit/tsconfig": "^1.0.1",
