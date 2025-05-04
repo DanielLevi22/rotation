@@ -1,3 +1,5 @@
+name: CI/CD Pipeline
+
 on:
   push:
     tags: ["*"]
@@ -20,27 +22,23 @@ jobs:
         with:
           node-version: 22
 
+      - name: apt-update (Linux)
+        if: startsWith(matrix.os, 'ubuntu-latest') || startsWith(matrix.os, 'macos-latest')
+        run: sudo apt-get update
+
       - name: Install dependencies (Generate package-lock.json if missing)
         run: |
-          if ($env:OS -eq "Windows_NT") {
-            if (-Not (Test-Path "package-lock.json")) {
-              npm install
-            }
-          } else {
+          if [ "$(uname)" == "Darwin" ] || [ "$(uname)" == "Linux" ]; then
             if [ ! -f package-lock.json ]; then
               npm install
             fi
-          }
+          elif [ "$(expr substr $(uname -s) 1 5)" == "MINGW" ]; then
+            if (-Not (Test-Path "package-lock.json")) {
+              npm install
+            }
+          fi
 
-      - name: apt-update
-        if: startsWith(matrix.os, 'ubuntu-latest')
-        run: sudo apt-get update
-
-      - name: autoremove
-        if: startsWith(matrix.os, 'ubuntu-latest')
-        run: sudo apt autoremove
-
-      - name: Install libarchive rpm on Linux
+      - name: Install libarchive rpm on Linux (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu-latest')
         run: sudo apt-get install libarchive-tools rpm
 
@@ -51,4 +49,4 @@ jobs:
         uses: samuelmeuli/action-electron-builder@v1
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          release: true 
+          release: true
