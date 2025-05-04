@@ -35,11 +35,8 @@ jobs:
       - name: Install macOS dependencies
         if: startsWith(matrix.os, 'macos-latest')
         run: |
-          # Ignorar erro se os Xcode Command Line Tools já estiverem instalados
           xcode-select --install || true
-          # Garantir que o brew está atualizado
           brew update || true
-          # Instalar pacotes necessários no macOS
           brew install libtool automake cmake pkg-config || true
 
       - name: Clean npm cache and remove node_modules (if on macOS)
@@ -48,6 +45,12 @@ jobs:
           rm -rf node_modules
           rm package-lock.json
           npm cache clean --force
+
+      - name: Install dependencies (Generate package-lock.json if missing)
+        run: |
+          if [ ! -f package-lock.json ]; then
+            npm install
+          fi
 
       - name: Install dependencies
         run: npm ci
