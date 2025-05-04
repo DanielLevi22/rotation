@@ -24,9 +24,8 @@ function createWindow(): void {
     backgroundColor: '#17141f',
     icon: join(__dirname, '../../resources/icon.png'), // Caminho para o ícone
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
+      preload: join(__dirname, '../preload/index.mjs'),
       sandbox: false
-
     }
   })
 

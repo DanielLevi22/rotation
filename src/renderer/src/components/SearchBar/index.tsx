@@ -24,10 +24,12 @@ export function SearchBar({ open, onOpenChange }: SearchBarProps) {
     return () => document.removeEventListener('keydown', down)
   }, [onOpenChange, open])
 
-  const { data } = useQuery(['documents'], async () => {
-    const response = await window.api.fetchDocuments()
-
-    return response.data
+  const { data } = useQuery({
+    queryKey: ['documents'],
+    queryFn: async () => {
+      const response = await window.api.fetchDocuments()
+      return response.data
+    }
   })
 
   function handleOpenDocument(id: string) {
@@ -55,8 +57,8 @@ export function SearchBar({ open, onOpenChange }: SearchBarProps) {
           Nenhum documento encontrado.
         </Command.Empty>
 
-        {data?.map((document) => {
-          return (
+        {Array.isArray(data)  && (
+          data.map((document) => (
             <Command.Item
               key={document.id}
               onSelect={() => handleOpenDocument(document.id)}
@@ -65,8 +67,8 @@ export function SearchBar({ open, onOpenChange }: SearchBarProps) {
               <File className="w-4 h-4" />
               {document.title}
             </Command.Item>
-          )
-        })}
+          ))
+          )}
       </Command.List>
     </Command.Dialog>
   )
