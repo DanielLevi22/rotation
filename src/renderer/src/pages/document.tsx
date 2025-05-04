@@ -21,7 +21,7 @@ export function Document() {
     mutationFn: async ({ title, content }: OnContentUpdatedParams) => {
       await window.api.saveDocument({ id: id!, title, content })
     },
-    onSuccess: (_, { title, content }) => {
+    onSuccess: (_, { title }) => {
       queryClient.setQueryData<IPCDocument[]>(['documents'], (documents) => {
         return documents?.map((document) => {
           if (document.id === id) {

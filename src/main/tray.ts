@@ -15,21 +15,6 @@ export function createTray(window: BrowserWindow) {
     },
     { type: 'separator' },
     { label: 'Documentos recentes', enabled: false },
-    {
-      label: 'Discover',
-      accelerator: 'CommandOrControl+1',
-      acceleratorWorksWhenHidden: false,
-    },
-    {
-      label: 'Ignite',
-      accelerator: 'CommandOrControl+2',
-      acceleratorWorksWhenHidden: false,
-    },
-    {
-      label: 'Rocketseat',
-      accelerator: 'CommandOrControl+3',
-      acceleratorWorksWhenHidden: false,
-    },
     { type: 'separator' },
     {
       label: 'Sair do Rotion',
